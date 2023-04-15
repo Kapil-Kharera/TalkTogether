@@ -5,6 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TalkTogether</title>
+        <!-- stylehseet links -->
+        <link rel="stylesheet" href="./style//style.css">
+        <link rel="stylesheet" href="./style/room.css">
 </head>
 <body>
     <header id="nav">
@@ -14,7 +17,7 @@
             </button>
             <a href="lobby.html">
                 <h3 id="logo">
-                    <img src="./images/logo.png" alt="Site Logo">
+                    <img src="./images/chat.png" alt="Site Logo">
                     <span>TalkTogether</span>
                 </h3>
             </a>
@@ -47,6 +50,23 @@
             </section>
 
             <section id="stream__container">
+
+                <div id="stream__box"></div>
+
+                <div id="streams__container">
+                    <div class="video__container" id="user-container-1">
+                        <h1>1</h1>
+                    </div>
+                    <div class="video__container" id="user-container-2">
+                        <h1>2</h1>
+                    </div>
+                    <div class="video__container" id="user-container-3">
+                        <h1>3</h1>
+                    </div>
+                    <div class="video__container" id="user-container-4">
+                        <h1>4</h1>
+                    </div>
+                </div>
 
                 <div id="stream__box"></div>
 
@@ -84,10 +104,10 @@
 
 
     <!-- script file links -->
-    <script type="text/javascript" src="js/AgoraRTC_N-4.11.0.js"></script>
-<script type="text/javascript" src="js/agora-rtm-sdk-1.4.4.js"></script>
-    <script src="./script/room.js"></script>
-    <script src="./script/room_rtm.js"></script>
-    <script src="./script/room_rtc.js"></script>
+
+    <script type="text/javascript" src="./script/AgoraRTC_N-4.17.0.js"></script>
+    <script type="text/javascript" src="./script/room.js"></script>
+    <script type="text/javascript" src="./script/room_rtm.js"></script>
+    <script type="text/javascript" src="./script/room_rtc.js"></script>
 </body>
 </html>
