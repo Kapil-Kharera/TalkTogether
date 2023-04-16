@@ -1,4 +1,4 @@
-const APP_ID = "d8dfcead48124b1e8a3fd5fe1b9f76fa";
+const APP_ID = "";
 
 let uid = sessionStorage.getItem('uid');
 
@@ -34,10 +34,23 @@ const joinRoomInit = async () => {
 }
 
 const joinStream = async () => {
-    localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
+    localTracks = await AgoraRTC.createMicrophoneAndCameraTracks({}, {
+        encoderConfig: {
+            width: {
+                min: 640,
+                ideal: 1920,
+                max: 1920
+            },
+            height: {
+                min: 480,
+                ideal: 1080,
+                max: 1080
+            }
+        }
+    });
 
     let player = `<div class="video__container" id="user-container-${uid}"> 
-                    // <div class="video-player" id="user-${uid}"></div>
+                    <div class="video-player" id="user-${uid}"></div>
                 </div>`;
     
     document.getElementById("streams__container").insertAdjacentHTML("beforeend", player);
@@ -67,8 +80,9 @@ const handleUserPublished = async (user, mediaType) => {
     }
 
     if(displayFrame.style.display) {
-        player.style.width = "100px";
-        player.style.height = "100px";
+        const videoFrame = document.getElementById(`user-container-${user.uid}`)
+        videoFrame.style.width = "100px";
+        videoFrame.style.height = "100px";
     }
 
     if(mediaType === 'video') {
@@ -94,6 +108,33 @@ const handleUserLeft = async (user) => {
         }
     }
 }
+
+const toggleMic = async (e) => {
+    const button = e.currentTarget;
+
+    if(localTracks[0].muted) {
+        await localTracks[0].setMuted(false);
+        button.classList.add("active");
+    }else {
+        await localTracks[1].setMuted(true);
+        button.classList.remove("active");
+    }
+}
+
+const toggleCamera = async (e) => {
+    const button = e.currentTarget;
+
+    if(localTracks[1].muted) {
+        await localTracks[1].setMuted(false);
+        button.classList.add("active");
+    }else {
+        await localTracks[1].setMuted(true);
+        button.classList.remove("active");
+    }
+}
+
+document.getElementById("camera-btn").addEventListener("click", toggleCamera);
+document.getElementById("mic-btn").addEventListener("click", toggleMic);
 
 joinRoomInit();
 
