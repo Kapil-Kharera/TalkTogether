@@ -1,4 +1,4 @@
-const APP_ID = "";
+const APP_ID = "d8dfcead48124b1e8a3fd5fe1b9f76fa";
 
 let uid = sessionStorage.getItem('uid');
 
@@ -36,11 +36,13 @@ const joinRoomInit = async () => {
 const joinStream = async () => {
     localTracks = await AgoraRTC.createMicrophoneAndCameraTracks();
 
-    const player = `<div class="video__container" id="user-conatainer-${uid}"> 
-                    <div class="video-player" id="user-${uid}"></div>
+    let player = `<div class="video__container" id="user-container-${uid}"> 
+                    // <div class="video-player" id="user-${uid}"></div>
                 </div>`;
     
-    document.getElementById("stream__container").insertAdjacentHTML("beforeend", player);
+    document.getElementById("streams__container").insertAdjacentHTML("beforeend", player);
+
+    document.getElementById(`user-container-${uid}`).addEventListener("click", expandVideoFrame);
 
     localTracks[1].play(`user-${uid}`);
 
@@ -55,11 +57,18 @@ const handleUserPublished = async (user, mediaType) => {
     let player = document.getElementById(`user-container-${user.id}`);
 
     if(player === null) {
-        player = `<div class="video__container" id="user-conatainer-${user.uid}"> 
+        player = `<div class="video__container" id="user-container-${user.uid}"> 
                     <div class="video-player" id="user-${user.uid}"></div>
                 </div>`;
 
         document.getElementById("streams__container").insertAdjacentHTML("beforeend", player);
+
+        document.getElementById(`user-container-${user.uid}`).addEventListener("click", expandVideoFrame);
+    }
+
+    if(displayFrame.style.display) {
+        player.style.width = "100px";
+        player.style.height = "100px";
     }
 
     if(mediaType === 'video') {
@@ -74,6 +83,16 @@ const handleUserPublished = async (user, mediaType) => {
 const handleUserLeft = async (user) => {
     delete remoteUsers[user.uid];
     document.getElementById(`user-container-${user.uid}`).remove();
+
+    if(userIdInDisplayFrame === `user-container-${user.uid}`) {
+        displayFrame.style.display = null;
+        const videoFrames = document.getElementsByClassName("video__container");
+
+        for(let i = 0; videoFrames.length > i; i++) {
+            videoFrames[i].style.width = "300px";
+            videoFrames[i].style.height = "300px";
+        }
+    }
 }
 
 joinRoomInit();
